@@ -5,8 +5,8 @@ using Avorenium.Core.Domain.Entities.Results;
 
 namespace Avorenium.Core.Application.Interfaces
 {
-    public interface IIssueApplicationService
+    public interface IIssuesApplicationService
     {
-        Task<IResult<IssueDto, Enum>> Register(IssueCreateDto issueCreateDto);
+        Task<IApplicationResult<IssueDto, Enum>> Register(IssueCreateDto issueCreateDto);
     }
 }

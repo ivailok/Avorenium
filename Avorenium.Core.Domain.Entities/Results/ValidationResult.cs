@@ -5,32 +5,32 @@ using Avorenium.Core.Domain.Entities.Enums;
 
 namespace Avorenium.Core.Domain.Entities.Results
 {
-    public class ErrorResult<TError> : IResult<TError>
+    public class ValidationResult<TError> : IApplicationResult<TError>
     {
-        public ErrorResult(StatusEnum status, TError error)
+        public ValidationResult(StatusEnum status, TError error)
         {
             Status = status;
-            Errors = new List<TError> { error };
+            ValidationErrors = new List<TError> { error };
         }
 
-        public ErrorResult(StatusEnum status, IEnumerable<TError> errors)
+        public ValidationResult(StatusEnum status, IEnumerable<TError> errors)
         {
             Status = status;
-            Errors = new List<TError>(errors);
+            ValidationErrors = new List<TError>(errors);
         }
 
-        public ErrorResult(IResult<TError> errorResult)
+        public ValidationResult(IApplicationResult<TError> errorResult)
         {
             Status = errorResult.Status;
-            Errors = errorResult.Errors;
+            ValidationErrors = errorResult.ValidationErrors;
         }
 
         public StatusEnum Status { get; private set; }
 
-        public IEnumerable<TError> Errors { get; private set; }
+        public IEnumerable<TError> ValidationErrors { get; private set; }
     }
 
-    public class ErrorResult<TData, TError> : ErrorResult<TError>, IResult<TData, TError>
+    public class ErrorResult<TData, TError> : ValidationResult<TError>, IApplicationResult<TData, TError>
         where TData : class
     {
         public ErrorResult(StatusEnum status, TError error)
@@ -43,7 +43,7 @@ namespace Avorenium.Core.Domain.Entities.Results
         {
         }
 
-        public ErrorResult(IResult<TData, TError> errorResult)
+        public ErrorResult(IApplicationResult<TData, TError> errorResult)
             : base(errorResult)
         {
         }

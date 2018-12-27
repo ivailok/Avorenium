@@ -1,3 +1,4 @@
+using Avorenium.Dependency.Resolution;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +28,8 @@ namespace Avorenium.Web
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            DependencyResolver.Register(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

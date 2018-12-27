@@ -27,6 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Avorenium.Core.Domain.Entities\Avorenium.Core.Domain.Entities.csproj" />
     <ProjectReference Include="..\Avorenium.Core.Application.Interfaces\Avorenium.Core.Application.Interfaces.csproj" />
+    <ProjectReference Include="..\Avorenium.Dependency.Resolution\Avorenium.Dependency.Resolution.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

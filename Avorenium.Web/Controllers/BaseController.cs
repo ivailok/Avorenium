@@ -12,7 +12,7 @@ namespace Avorenium.Web.Controllers
 {
     public class BaseController : Controller
     {
-        protected IActionResult HandleResult<TData, TError>(IResult<TData, TError> result)
+        protected IActionResult HandleResult<TData, TError>(IApplicationResult<TData, TError> result)
             where TData : class
         {
             switch (result.Status)
@@ -33,7 +33,7 @@ namespace Avorenium.Web.Controllers
                         return HandleGeneralMappingError(ErrorConstants.ApplicationStatusToResultDataMappingError);
                     }
 
-                    return Created((string)null, result.Data);
+                    return Created(string.Empty, result.Data);
                 }
                 case StatusEnum.EntityUpdated:
                 case StatusEnum.EntityDeleted:
@@ -58,7 +58,7 @@ namespace Avorenium.Web.Controllers
                 }
                 case StatusEnum.ValidationFailed:
                 {
-                    var errors = result.Errors.Select(x => GetError((Enum)(object)x));
+                    var errors = result.ValidationErrors.Select(x => GetError((Enum)(object)x));
 
                     if (!errors.Any())
                     {

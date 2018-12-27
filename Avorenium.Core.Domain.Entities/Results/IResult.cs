@@ -3,17 +3,17 @@ using Avorenium.Core.Domain.Entities.Enums;
 
 namespace Avorenium.Core.Domain.Entities.Results
 {
-    public interface IResult
+    public interface IApplicationResult
     {
         StatusEnum Status { get; }
     }
 
-    public interface IResult<TError> : IResult
+    public interface IApplicationResult<TError> : IApplicationResult
     {
-        IEnumerable<TError> Errors { get; }
+        IEnumerable<TError> ValidationErrors { get; }
     }
 
-    public interface IResult<TData, TError> : IResult<TError>
+    public interface IApplicationResult<TData, TError> : IApplicationResult<TError>
         where TData : class
     {   
         TData Data { get; }

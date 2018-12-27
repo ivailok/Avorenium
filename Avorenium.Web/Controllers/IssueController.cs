@@ -6,21 +6,21 @@ using Microsoft.AspNetCore.Mvc;
 namespace Avorenium.Web.Controllers
 {
     [Route("[controller]")]
-    public class IssueController : BaseController
+    public class IssuesController : BaseController
     {
-        private readonly IIssueApplicationService issueApplicationService;
+        private readonly IIssuesApplicationService issuesApplicationService;
 
-        public IssueController(
-            IIssueApplicationService issueApplicationService) 
+        public IssuesController(
+            IIssuesApplicationService issueApplicationService) 
         {
-            this.issueApplicationService = issueApplicationService;
+            this.issuesApplicationService = issueApplicationService;
         }
 
         [HttpPost]
         [Route("")]
         public async Task<IActionResult> Register(IssueCreateDto issueCreateDto)
         {
-            var result = await issueApplicationService.Register(issueCreateDto);
+            var result = await issuesApplicationService.Register(issueCreateDto);
 
             return HandleResult(result);
         }
