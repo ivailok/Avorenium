@@ -1,5 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <ProjectReference Include="..\Avorenium.Core.Domain.Entities\Avorenium.Core.Domain.Entities.csproj" />
+    <ProjectReference Include="..\Avorenium.Core.Domain.Interfaces\Avorenium.Core.Domain.Interfaces.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
