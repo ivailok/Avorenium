@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avorenium.Core.Domain.Entities.Data.Dbo;
 using Avorenium.Core.Domain.Entities.Dto;
@@ -24,12 +25,20 @@ namespace Avorenium.Core.Domain.Services
             this.mapperService = mapperService;
         }
 
+        public async Task<List<IssueDto>> GetListAsync()
+        {
+            var issues = await issuesRepository.GetListAsync(shouldTrack: false);
+            var issueDtos = mapperService.Map<List<IssueDto>>(issues);
+
+            return issueDtos;
+        }
+
         public async Task<IssueDto> CreateAsync(IssueCreateDto issueCreateDto)
         {
             var issue = mapperService.Map<Issue>(issueCreateDto);
             
-            this.issuesRepository.Add(issue);
-            await this.unitOfWork.CompleteAsync();
+            issuesRepository.Add(issue);
+            await unitOfWork.CompleteAsync();
 
             var issueDto = mapperService.Map<IssueDto>(issue);
 

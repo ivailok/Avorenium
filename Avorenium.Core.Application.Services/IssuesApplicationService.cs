@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avorenium.Core.Application.Interfaces;
 using Avorenium.Core.Domain.Entities.Data.Dbo;
@@ -21,6 +22,13 @@ namespace Avorenium.Core.Application.Services
         {
             this.issuesDomainService = issuesDomainService;
             this.mapperService = mapperService;
+        }
+
+        public async Task<IApplicationResult<List<IssueDto>, Enum>> ViewIssuesAsync()
+        {
+            var issueDtos = await issuesDomainService.GetListAsync();
+
+            return new ValueResult<List<IssueDto>, Enum>(StatusEnum.EntityCreated, issueDtos);
         }
 
         public async Task<IApplicationResult<IssueDto, Enum>> RegisterAsync(IssueCreateDto issueCreateDto)

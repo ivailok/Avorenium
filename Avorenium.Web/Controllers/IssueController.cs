@@ -16,6 +16,15 @@ namespace Avorenium.Web.Controllers
             this.issuesApplicationService = issueApplicationService;
         }
 
+        [HttpGet]
+        [Route("")]
+        public async Task<IActionResult> ViewIssuesAsync()
+        {
+            var result = await issuesApplicationService.ViewIssuesAsync();
+
+            return HandleResult(result);
+        }
+
         [HttpPost]
         [Route("")]
         public async Task<IActionResult> RegisterAsync([FromBody]IssueCreateDto issueCreateDto)
