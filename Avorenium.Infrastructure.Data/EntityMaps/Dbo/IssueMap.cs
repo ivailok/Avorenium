@@ -9,12 +9,12 @@ namespace Avorenium.Infrastructure.Data.EntityMaps.Dbo
     {
         public override void Configure(EntityTypeBuilder<Issue> builder)
         {
-            builder.ToTable("Issue", "dbo");
+            builder.ToTable("Issues", "dbo");
 
             base.Configure(builder);
             
-            builder.Property(x => x.Title).HasColumnName("Title").HasColumnType("nvarchar").HasMaxLength(100).IsRequired();
-            builder.Property(x => x.Description).HasColumnName("Description").HasColumnType("nvarchar").HasMaxLength(300).IsRequired();
+            builder.Property(x => x.Title).HasColumnName("Title").HasColumnType("varchar").HasMaxLength(100).IsRequired();
+            builder.Property(x => x.Description).HasColumnName("Description").HasColumnType("varchar").HasMaxLength(300).IsRequired();
         }
     }
 }

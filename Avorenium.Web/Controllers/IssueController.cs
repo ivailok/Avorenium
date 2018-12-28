@@ -18,9 +18,9 @@ namespace Avorenium.Web.Controllers
 
         [HttpPost]
         [Route("")]
-        public async Task<IActionResult> Register(IssueCreateDto issueCreateDto)
+        public async Task<IActionResult> RegisterAsync([FromBody]IssueCreateDto issueCreateDto)
         {
-            var result = await issuesApplicationService.Register(issueCreateDto);
+            var result = await issuesApplicationService.RegisterAsync(issueCreateDto);
 
             return HandleResult(result);
         }

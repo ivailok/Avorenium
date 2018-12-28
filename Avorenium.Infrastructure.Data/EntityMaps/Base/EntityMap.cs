@@ -21,7 +21,7 @@ namespace Avorenium.Infrastructure.Data.EntityMaps.Base
 
             if (typeof(T) == typeof(Guid))
             {
-                columnType = "uniqueidentifier";
+                columnType = "char(16)";
             }
 
             if (columnType == string.Empty)
@@ -29,18 +29,13 @@ namespace Avorenium.Infrastructure.Data.EntityMaps.Base
                 throw new InvalidOperationException($"Cannot setup entity key of type {typeof(T)}.");
             }
 
-            var keyProperty = builder.Property(x => x.Id).HasColumnName(@"Id").HasColumnType(columnType).IsRequired();
+            builder.Property(x => x.Id).HasColumnName(@"Id").HasColumnType(columnType).IsRequired();
 
-            if (typeof(T) == typeof(int))
-            {
-                keyProperty.UseNpgsqlIdentityColumn();
-            }
+            builder.Property(x => x.CreatedOn).HasColumnName("CreatedOn").HasColumnType("timestamp").HasMaxLength(3).IsRequired();
+            builder.Property(x => x.CreatedBy).HasColumnName("CreatedBy").HasColumnType("varchar").HasMaxLength(250).IsRequired();
 
-            builder.Property(x => x.CreatedBy).HasColumnName("CreatedBy").HasColumnType("nvarchar").HasMaxLength(250).IsRequired();
-            builder.Property(x => x.CreatedOn).HasColumnName("CreatedOn").HasColumnType("datetime").IsRequired();
-
-            builder.Property(x => x.ModifiedBy).HasColumnName("ModifiedBy").HasColumnType("nvarchar").HasMaxLength(250);
-            builder.Property(x => x.ModifiedOn).HasColumnName("ModifiedOn").HasColumnType("datetime"); 
+            builder.Property(x => x.ModifiedOn).HasColumnName("ModifiedOn").HasColumnType("timestamp").HasMaxLength(3); 
+            builder.Property(x => x.ModifiedBy).HasColumnName("ModifiedBy").HasColumnType("varchar").HasMaxLength(250);
         }
     }
 }

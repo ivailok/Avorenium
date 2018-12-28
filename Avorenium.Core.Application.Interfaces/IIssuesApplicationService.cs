@@ -7,6 +7,6 @@ namespace Avorenium.Core.Application.Interfaces
 {
     public interface IIssuesApplicationService
     {
-        Task<IApplicationResult<IssueDto, Enum>> Register(IssueCreateDto issueCreateDto);
+        Task<IApplicationResult<IssueDto, Enum>> RegisterAsync(IssueCreateDto issueCreateDto);
     }
 }

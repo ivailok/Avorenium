@@ -7,6 +7,11 @@ using Avorenium.Infrastructure.Mapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Avorenium.Core.Domain.Interfaces;
+using Avorenium.Core.Domain.Services;
+using Avorenium.Core.Interfaces.Data;
+using Avorenium.Core.Interfaces.Data.Repositories.Dbo;
+using Avorenium.Infrastructure.Data.Repositories.Dbo;
 
 namespace Avorenium.Dependency.Resolution
 {
@@ -36,6 +41,7 @@ namespace Avorenium.Dependency.Resolution
 
         private static void RegisterDomainServices(IServiceCollection services)
         {
+            services.AddScoped<IIssuesDomainService, IssuesDomainService>();
         }
 
         private static void RegisterInfrastructureServices(IServiceCollection services)
@@ -45,6 +51,8 @@ namespace Avorenium.Dependency.Resolution
 
         private static void RegisterData(IServiceCollection services)
         {
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IIssuesRepository, IssuesRepository>();
         }
     }
 }

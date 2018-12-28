@@ -1,5 +1,5 @@
 using Avorenium.Core.Domain.Entities.Data.Dbo;
-using JetBrains.Annotations;
+using Avorenium.Infrastructure.Data.EntityMaps.Dbo;
 using Microsoft.EntityFrameworkCore;
 
 namespace Avorenium.Infrastructure.Data
@@ -12,5 +12,10 @@ namespace Avorenium.Infrastructure.Data
         }
 
         public DbSet<Issue> Issues { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new IssueMap());
+        }
     }
 }
