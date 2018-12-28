@@ -2,21 +2,26 @@
 using Avorenium.Core.Application.Interfaces;
 using Avorenium.Core.Application.Services;
 using Avorenium.Core.Interfaces.Mapper;
+using Avorenium.Infrastructure.Data;
 using Avorenium.Infrastructure.Mapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 
 namespace Avorenium.Dependency.Resolution
 {
     public static class DependencyResolver
     {
-        public static void Register(IServiceCollection services)
+        public static void Register(IServiceCollection services, IConfiguration configuration)
         {
             InitializeLibraries();
 
-            RegisterApplicationServices(services);
+            services.AddDbContext<AvoreniumDbContext>(opts => opts.UseNpgsql(configuration.GetConnectionString(nameof(AvoreniumDbContext))));
+
+            RegisterData(services);
             RegisterDomainServices(services);
             RegisterInfrastructureServices(services);
-            RegisterData(services);
+            RegisterApplicationServices(services);
         }
 
         private static void InitializeLibraries()
@@ -40,7 +45,6 @@ namespace Avorenium.Dependency.Resolution
 
         private static void RegisterData(IServiceCollection services)
         {
-
         }
     }
 }
