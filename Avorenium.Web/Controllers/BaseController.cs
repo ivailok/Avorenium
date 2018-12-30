@@ -12,6 +12,81 @@ namespace Avorenium.Web.Controllers
 {
     public class BaseController : Controller
     {
+        protected IActionResult HandleResult(IApplicationResult result)
+        {
+            switch (result.Status)
+            {
+                case StatusEnum.EntityUpdated:
+                case StatusEnum.EntityDeleted:
+                {
+                    return NoContent();
+                }
+                case StatusEnum.InvalidRequest:
+                {
+                    return ValidationProblem(new ValidationProblemDetails(ModelState));
+                }
+                case StatusEnum.PermissionsAreRequired:
+                {
+                    return Forbid();
+                }
+                case StatusEnum.EntityNotFound:
+                {
+                    return NotFound();
+                }
+                case StatusEnum.DuplicatedEntityFound:
+                {
+                    return Conflict();
+                }
+                default:
+                {
+                    return HandleGeneralMappingError(ErrorConstants.ApplicationStatusToHttpStatusCodeMappingError);
+                }
+            }
+        }
+
+        protected IActionResult HandleResult<TError>(IApplicationResult<TError> result)
+        {
+            switch (result.Status)
+            {
+                case StatusEnum.EntityUpdated:
+                case StatusEnum.EntityDeleted:
+                {
+                    return NoContent();
+                }
+                case StatusEnum.InvalidRequest:
+                {
+                    return ValidationProblem(new ValidationProblemDetails(ModelState));
+                }
+                case StatusEnum.PermissionsAreRequired:
+                {
+                    return Forbid();
+                }
+                case StatusEnum.EntityNotFound:
+                {
+                    return NotFound();
+                }
+                case StatusEnum.DuplicatedEntityFound:
+                {
+                    return Conflict();
+                }
+                case StatusEnum.ValidationFailed:
+                {
+                    var errors = result.ValidationErrors.Select(x => GetError((Enum)(object)x));
+
+                    if (!errors.Any())
+                    {
+                        return HandleGeneralMappingError(ErrorConstants.ApplicationStatusToHttpStatusCodeMappingError);
+                    }
+
+                    return UnprocessableEntity(errors);
+                }
+                default:
+                {
+                    return HandleGeneralMappingError(ErrorConstants.ApplicationStatusToHttpStatusCodeMappingError);
+                }
+            }
+        }
+
         protected IActionResult HandleResult<TData, TError>(IApplicationResult<TData, TError> result)
             where TData : class
         {
@@ -73,7 +148,7 @@ namespace Avorenium.Web.Controllers
                 }
             }
         }
-
+        
         private IActionResult HandleGeneralMappingError(string error)
         {
             return ValidationProblem(

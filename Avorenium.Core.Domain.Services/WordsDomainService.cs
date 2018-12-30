@@ -27,7 +27,7 @@ namespace Avorenium.Core.Domain.Services
 
         public async Task<List<WordDto>> GetListAsync()
         {
-            var words = await wordsRepository.GetListAsync(shouldTrack: false);
+            var words = await wordsRepository.GetListAsync(null, false, x => x.Type);
             var wordDtos = mapperService.Map<List<WordDto>>(words);
 
             return wordDtos;

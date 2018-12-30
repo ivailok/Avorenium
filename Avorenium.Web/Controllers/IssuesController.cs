@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Avorenium.Web.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class IssuesController : BaseController
     {
         private readonly IIssuesApplicationService issuesApplicationService;

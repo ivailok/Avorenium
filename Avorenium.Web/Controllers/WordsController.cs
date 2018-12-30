@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Avorenium.Web.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class WordsController : BaseController
     {
         private readonly IWordsApplicationService wordsApplicationService;

@@ -13,5 +13,7 @@ namespace Avorenium.Core.Domain.Interfaces
          Task<bool> AnyAsync(string text);
 
          Task<WordTypeDto> CreateAsync(WordTypeCreateDto wordTypeCreateDto);
+
+         Task<bool> DeleteAsync(int id);
     }
 }

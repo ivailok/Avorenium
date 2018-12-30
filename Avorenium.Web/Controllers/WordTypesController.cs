@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Avorenium.Web.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class WordTypesController : BaseController
     {
         private readonly IWordTypesApplicationService wordTypesApplicationService;
@@ -30,6 +30,16 @@ namespace Avorenium.Web.Controllers
         public async Task<IActionResult> CreateAsync([FromBody]WordTypeCreateDto wordTypeCreateDto)
         {
             var result = await wordTypesApplicationService.CreateAsync(wordTypeCreateDto);
+
+            return HandleResult(result);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteAsync([FromRoute]int id)
+        {
+
+            var result = await wordTypesApplicationService.DeleteAsync(id);
 
             return HandleResult(result);
         }

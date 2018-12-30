@@ -13,7 +13,10 @@ namespace Avorenium.Core.Interfaces.Data.Repositories
 
         Task<TEntity> GetUniqueAsync(Expression<Func<TEntity, bool>> filter);
 
-        Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> filter = null, bool shouldTrack = true);
+        Task<List<TEntity>> GetListAsync(
+            Expression<Func<TEntity, bool>> filter = null,
+            bool shouldTrack = true,
+            params Expression<Func<TEntity, object>>[] includes);
 
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> filter);
 

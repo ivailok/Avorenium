@@ -11,5 +11,7 @@ namespace Avorenium.Core.Application.Interfaces
         Task<IApplicationResult<List<WordTypeDto>, Enum>> ViewAsync();
 
         Task<IApplicationResult<WordTypeDto, Enum>> CreateAsync(WordTypeCreateDto wordTypeCreateDto);
+
+        Task<IApplicationResult> DeleteAsync(int id);
     }
 }

@@ -29,13 +29,21 @@ namespace Avorenium.Infrastructure.Data.Repositories
             return dbSet.SingleOrDefaultAsync(filter);
         }
 
-        public Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> filter = null, bool shouldTrack = true)
+        public Task<List<TEntity>> GetListAsync(
+            Expression<Func<TEntity, bool>> filter = null, 
+            bool shouldTrack = true,
+            params Expression<Func<TEntity, object>>[] includes)
         {
             var query = dbSet.AsQueryable();
 
             if (!shouldTrack)
             {
                 query = query.AsNoTracking();
+            }
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
             }
 
             if (filter != null)
