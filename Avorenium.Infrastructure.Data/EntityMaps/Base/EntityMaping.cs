@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Avorenium.Infrastructure.Data.EntityMaps.Base
 {
-    public abstract class EntityMap<TEntity, T> : IEntityTypeConfiguration<TEntity>
-        where TEntity : class, IEntity<T>, IEntityCreateTrackable, IEntityEditTrackable
+    public static class EntityMapping
     {
-        public virtual void Configure(EntityTypeBuilder<TEntity> builder)
+        public static void ConfigureSingleKey<TEntity, T>(EntityTypeBuilder<TEntity> builder)
+            where TEntity : class, IEntity<T>
         {
             builder.HasKey(x => x.Id);
 
@@ -30,10 +30,18 @@ namespace Avorenium.Infrastructure.Data.EntityMaps.Base
             }
 
             builder.Property(x => x.Id).HasColumnName(@"Id").HasColumnType(columnType).IsRequired();
-
+        }
+    
+        public static void ConfigureCreateTrakable<TEntity>(EntityTypeBuilder<TEntity> builder)
+            where TEntity : class, IEntityCreateTrackable
+        {
             builder.Property(x => x.CreatedOn).HasColumnName("CreatedOn").HasColumnType("timestamp").HasMaxLength(3).IsRequired();
             builder.Property(x => x.CreatedBy).HasColumnName("CreatedBy").HasColumnType("varchar").HasMaxLength(250).IsRequired();
+        }
 
+        public static void ConfigureEditTrakable<TEntity>(EntityTypeBuilder<TEntity> builder)
+            where TEntity : class, IEntityEditTrackable
+        {
             builder.Property(x => x.ModifiedOn).HasColumnName("ModifiedOn").HasColumnType("timestamp").HasMaxLength(3); 
             builder.Property(x => x.ModifiedBy).HasColumnName("ModifiedBy").HasColumnType("varchar").HasMaxLength(250);
         }

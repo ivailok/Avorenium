@@ -12,6 +12,8 @@ using Avorenium.Core.Domain.Services;
 using Avorenium.Core.Interfaces.Data;
 using Avorenium.Core.Interfaces.Data.Repositories.Dbo;
 using Avorenium.Infrastructure.Data.Repositories.Dbo;
+using Avorenium.Core.Interfaces.Data.Repositories;
+using Avorenium.Infrastructure.Data.Repositories;
 
 namespace Avorenium.Dependency.Resolution
 {
@@ -46,6 +48,7 @@ namespace Avorenium.Dependency.Resolution
             services.AddScoped<IIssuesDomainService, IssuesDomainService>();
             services.AddScoped<IWordsDomainService, WordsDomainService>();
             services.AddScoped<IWordTypesDomainService, WordTypesDomainService>();
+            services.AddScoped<ITermsDomainService, TermsDomainService>();
         }
 
         private static void RegisterInfrastructureServices(IServiceCollection services)
@@ -56,6 +59,7 @@ namespace Avorenium.Dependency.Resolution
         private static void RegisterData(IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IPersistencePreparator, PersistencePreparator>();
             services.AddScoped<IIssuesRepository, IssuesRepository>();
             services.AddScoped<IWordsRepository, WordsRepository>();
             services.AddScoped<IWordTypesRepository, WordTypesRepository>();

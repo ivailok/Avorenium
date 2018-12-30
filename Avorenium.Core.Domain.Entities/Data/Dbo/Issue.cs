@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Avorenium.Core.Domain.Entities.Data.Base;
 
 namespace Avorenium.Core.Domain.Entities.Data.Dbo
@@ -18,5 +19,11 @@ namespace Avorenium.Core.Domain.Entities.Data.Dbo
         public DateTime? ModifiedOn { get; set; }
         
         public string ModifiedBy { get; set; }
+
+        #region Navigation properties
+
+        public ICollection<IssueWord> Words { get; set; }
+
+        #endregion
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Avorenium.Core.Domain.Entities.Data.Base;
 using Avorenium.Core.Interfaces.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Avorenium.Infrastructure.Data.Repositories
 {
@@ -13,10 +14,14 @@ namespace Avorenium.Infrastructure.Data.Repositories
         where TEntity : class, IEntity<T>
     {
         protected readonly DbSet<TEntity> dbSet;
+        protected readonly IPersistencePreparator persistencePreparator;
 
-        public Repository(AvoreniumDbContext dbContext)
+        public Repository(
+            AvoreniumDbContext dbContext,
+            IPersistencePreparator persistencePreparator)
         {
             dbSet = dbContext.Set<TEntity>();
+            this.persistencePreparator = persistencePreparator;
         }
         
         public Task<TEntity> GetAsync(int id)
@@ -30,8 +35,8 @@ namespace Avorenium.Infrastructure.Data.Repositories
         }
 
         public Task<List<TEntity>> GetListAsync(
-            Expression<Func<TEntity, bool>> filter = null, 
             bool shouldTrack = true,
+            Expression<Func<TEntity, bool>> filter = null,
             params Expression<Func<TEntity, object>>[] includes)
         {
             var query = dbSet.AsQueryable();
@@ -61,25 +66,25 @@ namespace Avorenium.Infrastructure.Data.Repositories
 
         public void Add(TEntity entity)
         {
-            PrepareToAdd(entity);
+            persistencePreparator.ToAdd(entity);
             dbSet.Add(entity);
         }
 
         public void AddRange(List<TEntity> entities)
         {
-            entities.ForEach(PrepareToAdd);
+            entities.ForEach(persistencePreparator.ToAdd);
             dbSet.AddRange(entities);
         }
 
         public void Update(TEntity entity)
         {
-            PrepareToUpdate(entity);
+            persistencePreparator.ToUpdate(entity);
             dbSet.Update(entity);
         }
 
         public void UpdateRange(List<TEntity> entities)
         {
-            entities.ForEach(PrepareToUpdate);
+            entities.ForEach(persistencePreparator.ToUpdate);
             dbSet.UpdateRange(entities);
         }
 
@@ -91,29 +96,6 @@ namespace Avorenium.Infrastructure.Data.Repositories
         public void RemoveRange(List<TEntity> entities)
         {
             dbSet.RemoveRange(entities);
-        }
-
-        private void PrepareToAdd(TEntity entity)
-        {
-            if (entity is IEntityCreateTrackable)
-            {
-                (entity as IEntityCreateTrackable).CreatedOn = DateTime.UtcNow;
-                (entity as IEntityCreateTrackable).CreatedBy = "Avorenium App";
-            }
-
-            if (entity is IEntity<Guid>)
-            {
-                (entity as IEntity<Guid>).Id = Guid.NewGuid();
-            }
-        }
-
-        private void PrepareToUpdate(TEntity entity)
-        {
-            if (entity is IEntityEditTrackable)
-            {
-                (entity as IEntityEditTrackable).ModifiedOn = DateTime.UtcNow;
-                (entity as IEntityEditTrackable).ModifiedBy = "Avorenium App";
-            }
         }
     }
 }

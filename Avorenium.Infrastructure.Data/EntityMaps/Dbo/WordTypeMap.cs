@@ -5,13 +5,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Avorenium.Infrastructure.Data.EntityMaps.Dbo
 {
-    public class WordTypeMap : EntityMap<WordType, int>
+    public class WordTypeMap : IEntityTypeConfiguration<WordType>
     {
-        public override void Configure(EntityTypeBuilder<WordType> builder)
+        public void Configure(EntityTypeBuilder<WordType> builder)
         {
             builder.ToTable("WordTypes", "dbo");
 
-            base.Configure(builder);
+            EntityMapping.ConfigureSingleKey<WordType, int>(builder);
+            EntityMapping.ConfigureCreateTrakable(builder);
+            EntityMapping.ConfigureEditTrakable(builder);
             
             builder.Property(x => x.Text).HasColumnName("Text").HasColumnType("varchar").HasMaxLength(100).IsRequired();
 

@@ -6,9 +6,6 @@ namespace Avorenium.Core.Domain.Interfaces
 {
     public interface ITermsDomainService
     {
-        List<string> SplitTerms(string text);
-
-
-        List<string> FilterMeaninglessWords(List<string> words);
+        List<string> GetFilteredTerms(string text, List<string> separators, List<string> filterTerms);
     }
 }

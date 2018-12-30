@@ -16,6 +16,7 @@ namespace Avorenium.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new IssueMap());
             modelBuilder.ApplyConfiguration(new WordMap());
             modelBuilder.ApplyConfiguration(new WordTypeMap());
+            modelBuilder.ApplyConfiguration(new IssueWordMap());
         }
     }
 }

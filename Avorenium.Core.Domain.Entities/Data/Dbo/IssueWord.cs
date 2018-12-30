@@ -1,20 +1,15 @@
 using System;
-using System.Collections.Generic;
 using Avorenium.Core.Domain.Entities.Data.Base;
-using Avorenium.Core.Domain.Entities.Enums;
 
 namespace Avorenium.Core.Domain.Entities.Data.Dbo
 {
-    public class Word : IEntity<int>, IEntityCreateTrackable, IEntityEditTrackable
+    public class IssueWord : IEntityCreateTrackable, IEntityEditTrackable
     {
-        public int Id { get; set; }
+        public int IssueId { get; set; }
 
-        public string Text { get; set; }
-
-        public int TypeId { get;set; }
+        public int WordId { get; set; }
 
         public DateTime CreatedOn { get; set; }
-
         public string CreatedBy { get; set; }
 
         public DateTime? ModifiedOn { get; set; }
@@ -22,10 +17,10 @@ namespace Avorenium.Core.Domain.Entities.Data.Dbo
         public string ModifiedBy { get; set; }
 
         #region Navigation properties
+        
+        public Issue Issue { get; set; }
 
-        public WordType Type { get;set; }
-
-        public ICollection<IssueWord> Issues { get; set; }
+        public Word Word { get; set; }
 
         #endregion
     }
