@@ -33,5 +33,15 @@ namespace Avorenium.Web.Controllers
 
             return HandleResult(result);
         }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteAsync([FromRoute]int id)
+        {
+
+            var result = await wordsApplicationService.DeleteAsync(id);
+
+            return HandleResult(result);
+        }
     }
 }

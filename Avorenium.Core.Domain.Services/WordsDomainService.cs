@@ -49,5 +49,19 @@ namespace Avorenium.Core.Domain.Services
 
             return wordDto;
         }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var wordType = await wordsRepository.GetAsync(id);
+
+            if (wordType == null)
+            {
+                return false;
+            }
+
+            wordsRepository.Remove(wordType);
+
+            return true;
+        }
     }
 }
