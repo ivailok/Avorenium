@@ -7,6 +7,11 @@ namespace Avorenium.Core.Domain.Entities.Results
 {
     public class ValidationResult<TError> : IApplicationResult<TError>
     {
+        public ValidationResult(StatusEnum status)
+        {
+            Status = status;
+        }
+
         public ValidationResult(StatusEnum status, TError error)
         {
             Status = status;
@@ -30,20 +35,25 @@ namespace Avorenium.Core.Domain.Entities.Results
         public IEnumerable<TError> ValidationErrors { get; private set; }
     }
 
-    public class ErrorResult<TData, TError> : ValidationResult<TError>, IApplicationResult<TData, TError>
+    public class ValidationResult<TData, TError> : ValidationResult<TError>, IApplicationResult<TData, TError>
         where TData : class
     {
-        public ErrorResult(StatusEnum status, TError error)
+        public ValidationResult(StatusEnum status)
+            : base(status)
+        {
+        }
+
+        public ValidationResult(StatusEnum status, TError error)
             : base(status, error)
         {
         }
 
-        public ErrorResult(StatusEnum status, IEnumerable<TError> errors)
+        public ValidationResult(StatusEnum status, IEnumerable<TError> errors)
             : base(status, errors)
         {
         }
 
-        public ErrorResult(IApplicationResult<TData, TError> errorResult)
+        public ValidationResult(IApplicationResult<TData, TError> errorResult)
             : base(errorResult)
         {
         }

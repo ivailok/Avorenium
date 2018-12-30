@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
+using Avorenium.Core.Domain.Entities.Enums.Validation;
 
 namespace Avorenium.Core.Domain.Entities.Constants
 {
     public static class ErrorConstants
     {
         public static string ApplicationStatusToHttpStatusCodeMappingError => "Invalid application status to http status code mapping.";
-
 
         public static string ApplicationStatusToResultDataMappingError => "Invalid application status to result data mapping.";
 
@@ -18,6 +18,7 @@ namespace Avorenium.Core.Domain.Entities.Constants
             {
                 return new Dictionary<Enum, string>()
                 {
+                    [WordValidationEnum.NoSuchType] = "Type doesn't exist."
                 };
             }
         }

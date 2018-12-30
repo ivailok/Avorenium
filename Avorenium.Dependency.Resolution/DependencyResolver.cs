@@ -37,11 +37,15 @@ namespace Avorenium.Dependency.Resolution
         private static void RegisterApplicationServices(IServiceCollection services)
         {
             services.AddScoped<IIssuesApplicationService, IssuesApplicationService>();
+            services.AddScoped<IWordsApplicationService, WordsApplicationService>();
+            services.AddScoped<IWordTypesApplicationService, WordTypesApplicationService>();
         }
 
         private static void RegisterDomainServices(IServiceCollection services)
         {
             services.AddScoped<IIssuesDomainService, IssuesDomainService>();
+            services.AddScoped<IWordsDomainService, WordsDomainService>();
+            services.AddScoped<IWordTypesDomainService, WordTypesDomainService>();
         }
 
         private static void RegisterInfrastructureServices(IServiceCollection services)
@@ -53,6 +57,8 @@ namespace Avorenium.Dependency.Resolution
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IIssuesRepository, IssuesRepository>();
+            services.AddScoped<IWordsRepository, WordsRepository>();
+            services.AddScoped<IWordTypesRepository, WordTypesRepository>();
         }
     }
 }

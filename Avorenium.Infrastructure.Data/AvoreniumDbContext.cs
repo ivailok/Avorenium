@@ -11,11 +11,11 @@ namespace Avorenium.Infrastructure.Data
         {
         }
 
-        public DbSet<Issue> Issues { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new IssueMap());
+            modelBuilder.ApplyConfiguration(new WordMap());
+            modelBuilder.ApplyConfiguration(new WordTypeMap());
         }
     }
 }

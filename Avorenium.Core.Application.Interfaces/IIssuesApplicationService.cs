@@ -8,7 +8,7 @@ namespace Avorenium.Core.Application.Interfaces
 {
     public interface IIssuesApplicationService
     {
-        Task<IApplicationResult<List<IssueDto>, Enum>> ViewIssuesAsync();
+        Task<IApplicationResult<List<IssueDto>, Enum>> ViewAsync();
 
         Task<IApplicationResult<IssueDto, Enum>> RegisterAsync(IssueCreateDto issueCreateDto);
     }

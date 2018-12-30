@@ -14,21 +14,18 @@ namespace Avorenium.Core.Application.Services
     public class IssuesApplicationService : BaseApplicationService, IIssuesApplicationService
     {
         private readonly IIssuesDomainService issuesDomainService;
-        private readonly IMapperService mapperService;
 
         public IssuesApplicationService(
-            IIssuesDomainService issuesDomainService,
-            IMapperService mapperService)
+            IIssuesDomainService issuesDomainService)
         {
             this.issuesDomainService = issuesDomainService;
-            this.mapperService = mapperService;
         }
 
-        public async Task<IApplicationResult<List<IssueDto>, Enum>> ViewIssuesAsync()
+        public async Task<IApplicationResult<List<IssueDto>, Enum>> ViewAsync()
         {
             var issueDtos = await issuesDomainService.GetListAsync();
 
-            return new ValueResult<List<IssueDto>, Enum>(StatusEnum.EntityCreated, issueDtos);
+            return new ValueResult<List<IssueDto>, Enum>(StatusEnum.EntityRetrieved, issueDtos);
         }
 
         public async Task<IApplicationResult<IssueDto, Enum>> RegisterAsync(IssueCreateDto issueCreateDto)

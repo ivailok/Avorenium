@@ -12,21 +12,26 @@ namespace Avorenium.Infrastructure.Data.Repositories
     public abstract class Repository<TEntity, T> : IRepository<TEntity, T>
         where TEntity : class, IEntity<T>
     {
-        protected readonly AvoreniumDbContext dbContext;
+        protected readonly DbSet<TEntity> dbSet;
 
         public Repository(AvoreniumDbContext dbContext)
         {
-            this.dbContext = dbContext;
+            dbSet = dbContext.Set<TEntity>();
         }
         
         public Task<TEntity> GetAsync(int id)
         {
-            return dbContext.Set<TEntity>().FindAsync(id);
+            return dbSet.FindAsync(id);
+        }
+
+        public Task<TEntity> GetUniqueAsync(Expression<Func<TEntity, bool>> filter)
+        {
+            return dbSet.SingleOrDefaultAsync(filter);
         }
 
         public Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> filter = null, bool shouldTrack = true)
         {
-            var query = dbContext.Set<TEntity>().AsQueryable();
+            var query = dbSet.AsQueryable();
 
             if (!shouldTrack)
             {
@@ -41,38 +46,43 @@ namespace Avorenium.Infrastructure.Data.Repositories
             return query.ToListAsync();
         }
 
+        public Task<bool> AnyAsync(Expression<Func<TEntity, bool>> filter)
+        {
+            return dbSet.AnyAsync(filter);
+        }
+
         public void Add(TEntity entity)
         {
             PrepareToAdd(entity);
-            dbContext.Set<TEntity>().Add(entity);
+            dbSet.Add(entity);
         }
 
         public void AddRange(List<TEntity> entities)
         {
             entities.ForEach(PrepareToAdd);
-            dbContext.Set<TEntity>().AddRange(entities);
+            dbSet.AddRange(entities);
         }
 
         public void Update(TEntity entity)
         {
             PrepareToUpdate(entity);
-            dbContext.Set<TEntity>().Update(entity);
+            dbSet.Update(entity);
         }
 
         public void UpdateRange(List<TEntity> entities)
         {
             entities.ForEach(PrepareToUpdate);
-            dbContext.Set<TEntity>().UpdateRange(entities);
+            dbSet.UpdateRange(entities);
         }
 
         public void Remove(TEntity entity)
         {
-            dbContext.Set<TEntity>().Remove(entity);
+            dbSet.Remove(entity);
         }
 
         public void RemoveRange(List<TEntity> entities)
         {
-            dbContext.Set<TEntity>().RemoveRange(entities);
+            dbSet.RemoveRange(entities);
         }
 
         private void PrepareToAdd(TEntity entity)

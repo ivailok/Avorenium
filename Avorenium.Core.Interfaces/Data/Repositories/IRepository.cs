@@ -11,7 +11,11 @@ namespace Avorenium.Core.Interfaces.Data.Repositories
     {
         Task<TEntity> GetAsync(int id);
 
+        Task<TEntity> GetUniqueAsync(Expression<Func<TEntity, bool>> filter);
+
         Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> filter = null, bool shouldTrack = true);
+
+        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> filter);
 
         void Add(TEntity entity);
 
