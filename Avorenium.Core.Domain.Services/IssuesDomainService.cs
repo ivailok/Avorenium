@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Avorenium.Core.Domain.Entities.Data.Dbo;
 using Avorenium.Core.Domain.Entities.Dto;
@@ -26,9 +28,16 @@ namespace Avorenium.Core.Domain.Services
             this.mapperService = mapperService;
         }
 
-        public async Task<List<IssueDto>> GetListAsync()
+        public async Task<List<IssueDto>> GetListAsync(List<string> filterWords = null)
         {
-            var issues = await issuesRepository.GetListIncludingWordsAsync();
+            Expression<Func<Issue, bool>> predicate = null;
+
+            if (filterWords != null)
+            {
+                predicate = x => x.Words.Any(w => filterWords.Any(fw => fw == w.Word.Text));
+            }
+
+            var issues = await issuesRepository.GetListIncludingWordsAsync(false, predicate);
             var issueDtos = mapperService.Map<List<IssueDto>>(issues);
 
             return issueDtos;

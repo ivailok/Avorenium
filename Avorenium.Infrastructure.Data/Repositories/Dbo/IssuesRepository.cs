@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Avorenium.Core.Domain.Entities.Data.Dbo;
 using Avorenium.Core.Interfaces.Data.Repositories;
@@ -16,14 +19,23 @@ namespace Avorenium.Infrastructure.Data.Repositories.Dbo
         {
         }
 
-        public Task<List<Issue>> GetListIncludingWordsAsync()
+        public Task<List<Issue>> GetListIncludingWordsAsync(bool shouldTrack = true, Expression<Func<Issue, bool>> predicate = null)
         {
-            var result = dbSet
-                .AsNoTracking()
-                .Include(x => x.Words).ThenInclude(x => x.Word)
-                .ToListAsync();
+            var query = dbSet.AsQueryable();
 
-            return result;
+            if (!shouldTrack)
+            {
+                query = query.AsNoTracking();
+            }
+
+            query = query.Include(x => x.Words).ThenInclude(x => x.Word);
+
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            return query.ToListAsync();
         }
     }
 }

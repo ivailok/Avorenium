@@ -35,9 +35,19 @@ namespace Avorenium.Core.Application.Services
             this.mapperService = mapperService;
         }
 
-        public async Task<IApplicationResult<List<IssueDto>, Enum>> ViewAsync()
+        public async Task<IApplicationResult<List<IssueDto>, Enum>> ViewAsync(IssueSearchDto issueSearchDto)
         {
-            var issueDtos = await issuesDomainService.GetListAsync();
+            List<string> filterWords = null;
+
+            if (issueSearchDto != null && !string.IsNullOrWhiteSpace(issueSearchDto.Text))
+            {
+                var separators = (await wordsDomainService.GetListAsync(3)).Select(x => x.Text).ToList();
+                var clutter = (await wordsDomainService.GetListAsync(4)).Select(x => x.Text).ToList();
+                var meaningfulWords = termsDomainService.GetFilteredTerms(issueSearchDto.Text, separators, clutter);
+                filterWords = meaningfulWords.Select(x => x.ToLower()).Distinct().ToList();
+            }
+
+            var issueDtos = await issuesDomainService.GetListAsync(filterWords);
 
             return new ValueResult<List<IssueDto>, Enum>(StatusEnum.EntityRetrieved, issueDtos);
         }

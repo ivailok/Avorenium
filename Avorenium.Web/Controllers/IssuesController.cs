@@ -18,9 +18,9 @@ namespace Avorenium.Web.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> ViewAsync()
+        public async Task<IActionResult> ViewAsync([FromQuery]IssueSearchDto issueSearchDto)
         {
-            var result = await issuesApplicationService.ViewAsync();
+            var result = await issuesApplicationService.ViewAsync(issueSearchDto);
 
             return HandleResult(result);
         }

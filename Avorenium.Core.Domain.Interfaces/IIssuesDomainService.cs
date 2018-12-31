@@ -7,7 +7,7 @@ namespace Avorenium.Core.Domain.Interfaces
 {
     public interface IIssuesDomainService
     {
-        Task<List<IssueDto>> GetListAsync();
+        Task<List<IssueDto>> GetListAsync(List<string> filterWords = null);
 
         Issue Create(IssueCreateDto issueCreateDto);
     }
